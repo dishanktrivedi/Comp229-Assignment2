@@ -15,17 +15,20 @@
            <% } %>
            
             <br>
-            
-            <table class="fl-table table table-bordered table-hover styled-table  table-wrapper">
+            <br>
+            <p><strong>Click the headers of Name and Number to sort the table.</strong></p>
+            <p>The first time you click, the sorting direction is ascending.</p>
+            <p>Click again, and the sorting direction will be descending.</p>
+            <table class="fl-table table table-bordered table-hover styled-table  table-wrapper" id="contacttable">
                 <!-- Header Row-->
                 <tr class="d-flex">
                     <% if(typeof displayName == 'string' && displayName) { %>
-                        <th class="text-center col-2">Name</th>
-                        <th class="text-center col-2">Number</th>
+                        <th class="text-center col-2" onclick="sortTable(0)">Name</th>
+                        <th class="text-center col-2" onclick="sortTable(1)">Number</th>
                         <th class="text-center col-4">Email</th>
                      <% } else { %>
-                        <th class="text-center col-3">Name</th>
-                        <th class="text-center col-3">Number</th>
+                        <th class="text-center col-3" onclick="sortTable(0)">Name</th>
+                        <th class="text-center col-3" onclick="sortTable(1)">Number</th>
                         <th class="text-center col-6">Email</th>
                      <% } %>
                 </tr>
@@ -53,8 +56,59 @@
                         <% } %>
                     </tr>
                 <% } %>
+                <script>
+                    function sortTable(n) {
+                    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                    table = document.getElementById("contacttable");
+                    switching = true;
+                    
+                    dir = "asc"; 
+                    
+                    while (switching) {
+                     
+                        switching = false;
+                        rows = table.rows;
+                     
+                        for (i = 1; i < (rows.length - 1); i++) {
+                     
+                        shouldSwitch = false;
+                     
+                        x = rows[i].getElementsByTagName("TD")[n];
+                        y = rows[i + 1].getElementsByTagName("TD")[n];
+                     
+                        if (dir == "asc") {
+                            if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        
+                            shouldSwitch= true;
+                            break;
+                            }
+                        } else if (dir == "desc") {
+                            if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        
+                            shouldSwitch = true;
+                            break;
+                            }
+                        }
+                        }
+                        if (shouldSwitch) {
+                        
+                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                        switching = true;
+                        
+                        switchcount ++;      
+                        } else {
+                        
+                        if (switchcount == 0 && dir == "asc") {
+                            dir = "desc";
+                            switching = true;
+                        }
+                        }
+                    }
+                    }
+                    </script>
+
             </table>
-        
+                
         </div>
     </div>
   </main>
